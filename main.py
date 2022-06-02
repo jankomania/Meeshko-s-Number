@@ -3,7 +3,7 @@ import tkinter as tk
 
 
 def guess():
-    gold.set('500')
+    gold.set('1000')
     print(gold.get())
 
 

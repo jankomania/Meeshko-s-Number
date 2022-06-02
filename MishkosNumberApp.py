@@ -6,6 +6,9 @@ from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
 
 class Grid(GridLayout):
+    def pressed(self, instance):
+        print('pressed')
+
     def __init__(self, **kwargs):
         super(Grid, self).__init__(**kwargs)
         self.cols = 1
@@ -28,10 +31,13 @@ class Grid(GridLayout):
         self.difficulty_buttons.cols = 3
 
         self.easy = Button(text='Easy', font_size=25)
+        self.easy.bind(on_press=self.pressed)
         self.difficulty_buttons.add_widget(self.easy)
         self.med = Button(text='Medium', font_size=25)
+        self.med.bind(on_press=self.pressed)
         self.difficulty_buttons.add_widget(self.med)
         self.hard = Button(text='Hard', font_size=25)
+        self.hard.bind(on_press=self.pressed)
         self.difficulty_buttons.add_widget(self.hard)
 
         self.start_game.add_widget(Label(text='Difficulty:', font_size=25))
@@ -39,6 +45,7 @@ class Grid(GridLayout):
         self.start_game.add_widget(self.difficulty_buttons)
 
         self.submit = Button(text='Submit', font_size=25)
+        self.submit.bind(on_press=self.pressed)
         self.start_game.add_widget(self.submit)
 
         self.add_widget(self.start_params)

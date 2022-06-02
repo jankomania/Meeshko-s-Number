@@ -3,7 +3,8 @@ import tkinter as tk
 
 
 def guess():
-    print('guess')
+    gold.set('500')
+    print(gold.get())
 
 
 if __name__ == '__main__':

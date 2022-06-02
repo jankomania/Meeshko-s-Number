@@ -17,6 +17,7 @@ if __name__ == '__main__':
     ito = tk.StringVar()
 
     # Starting Resources
+    gold = tk.StringVar()
 
     # Creates entries and descriptions
     tk.Label(window, text="Mishko's Number", font=('Ubuntu', 30)).place(x=90, y=60)

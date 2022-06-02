@@ -5,9 +5,22 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
 
+class Game():
+    def __init__(self) -> None:
+        pass
+
+
+    def set_difficulty(self, difficulty):
+        pass
+
 class Grid(GridLayout):
+    
+
     def pressed(self, instance):
         print('pressed')
+
+    def set_difficulty(self, instance, difficulty):
+        Game.set_difficulty(difficulty)
 
     def __init__(self, **kwargs):
         super(Grid, self).__init__(**kwargs)

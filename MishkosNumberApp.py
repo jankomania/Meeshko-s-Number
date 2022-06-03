@@ -1,23 +1,16 @@
-import kivy
+import time
+import datetime
+import random
 from kivy.app import App
 from kivy.uix.label import Label
 from kivy.uix.gridlayout import GridLayout
-from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
 
 class Game():
-    def __init__(self, difficulty='Medium') -> None:
+    def __init__(self, difficulty='Medium', start_gold='1000') -> None:
         self.difficulty = difficulty
-        self.start_gold = self.gold(self.difficulty)
+        self.start_gold = start_gold
 
-    # Sets the starting gold according to the selected difficulty (default 'Medium')
-    def gold(self, difficulty):
-        if difficulty == 'Easy':
-            return 1500
-        if difficulty == 'Medium':
-            return 1000
-        if difficulty == 'Hard':
-            return 500
 
     def printr(self):
         print(self.difficulty)
@@ -27,7 +20,7 @@ class Game():
 game = Game()
 
 
-class Grid(GridLayout):
+class MainMenu(GridLayout):
     def easy(self, instance):
         game.difficulty = 'Easy'
         game.start_gold = '500'
@@ -45,65 +38,76 @@ class Grid(GridLayout):
 
 
     def __init__(self, **kwargs):
-        super(Grid, self).__init__(**kwargs)
-        self.cols = 1
-
-        # Main Grid
-        self.add_widget(Label(text="Mishko's Number", font_size=75))
-
-
-        # Start Parameters Grid 
-        self.start_params = GridLayout()
-        self.start_params.cols = 2
-        
-        self.start_params.add_widget(Label(text='From:', font_size=25))
-        self.ifrom = TextInput(multiline=False)
-        self.start_params.add_widget(self.ifrom)
-
-        self.start_params.add_widget(Label(text='To:', font_size=25))
-        self.ito = TextInput(multiline=False)
-        self.start_params.add_widget(self.ito)
-
-
-        # Difficulty Grid
-        self.start_game = GridLayout()
-        self.start_game.cols = 2
-      
-        self.difficulty_buttons = GridLayout()
-        self.difficulty_buttons.cols = 3
+        super(MainMenu, self).__init__(**kwargs)
 
         self.button_easy = Button(text='Easy', font_size=25)
         self.button_easy.bind(on_press=self.easy)
-        self.difficulty_buttons.add_widget(self.button_easy)
 
         self.button_med = Button(text='Medium', font_size=25)
         self.button_med.bind(on_press=self.med)
-        self.difficulty_buttons.add_widget(self.button_med)
 
         self.button_hard = Button(text='Hard', font_size=25)
         self.button_hard.bind(on_press=self.hard)
+
+
+        # Difficulty buttons Grid
+        self.difficulty_buttons = GridLayout()
+        self.difficulty_buttons.cols = 3
+
+        self.difficulty_buttons.add_widget(self.button_easy)
+        self.difficulty_buttons.add_widget(self.button_med)
         self.difficulty_buttons.add_widget(self.button_hard)
 
-        self.start_game.add_widget(Label(text='Difficulty:', font_size=25))
 
-        self.start_game.add_widget(self.difficulty_buttons)
+        # Difficulty Grid
+        self.difficulty = GridLayout()
+        self.difficulty.cols = 2
+        self.difficulty.add_widget(Label(text='Difficulty:', font_size=25))
+        self.difficulty.add_widget(self.difficulty_buttons)
 
 
-        # Submit Button
-        self.submit = Button(text='Submit', font_size=25)
-        self.submit.bind(on_press=self.printr)
-        self.add_widget(self.submit)
-
-        
-        # Adds the Start Parameters and Start Game Grid to Final Grid and then to the Main Grid
+        # Final Grid
         self.final = GridLayout()
         self.final.cols = 1
+        
+        # Submit Button
+        self.submit = Button(text='START GAME', font_size=50)
+        self.submit.bind(on_press=self.printr)
 
-        self.final.add_widget(self.start_params)
-        self.final.add_widget(self.start_game)
+        self.final.add_widget(self.difficulty)
+        self.final.add_widget(self.submit)
+
+         # Main Grid
+        self.cols = 1
+        
+        self.add_widget(Label(text="Mishko's Number", font_size=75))
 
         self.add_widget(self.final)
 
+class Grid(GridLayout):
+    def __init__(self, **kwargs):
+        super(Grid, self).__init__(**kwargs)
+        self.cols = 1
+
+        self.add_widget(Label(text='SUCCESS', font_size=100))
+
+def countdown():
+    total_seconds = 5
+    while total_seconds > 0:
+ 
+        # Timer represents time left on countdown
+        timer = datetime.timedelta(seconds = total_seconds)
+        
+        # Prints the time left on the timer
+        print(timer, end="\r")
+ 
+        # Delays the program one second
+        time.sleep(1)
+ 
+        # Reduces total time by one second
+        total_seconds -= 1
+ 
+    return bool(random.getrandbits(1))
 
 
 class MishkosNumberApp(App):

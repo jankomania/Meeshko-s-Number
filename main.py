@@ -1,3 +1,5 @@
+__version__ = 0.1
+
 import kivy
 from kivy.app import App
 from kivy.lang import Builder

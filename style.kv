@@ -1,4 +1,11 @@
-<MainMenu>
+WindowManager:
+    MainMenu:
+    GameWin:
+
+
+<MainMenu>:
+    name: 'Main Menu'
+
     GridLayout:
         size: root.width, root.height
         cols: 1
@@ -39,7 +46,46 @@
 
         Button:
             text: 'Start Game'
-            on_press: root.printr()
+            on_release:
+                app.root.current = 'Game Window'
+                root.manager.transition.direction = 'down'
             font_size: 30
             size_hint: None, None
             size: root.width, root.height / 4
+
+
+<GameWin>:
+    name: 'Game Window'
+    #size_hint: None, None
+    
+    GridLayout:
+        cols: 1
+        size: root.width, root.height
+
+        GridLayout:
+            cols: 3
+
+            Label:
+                text: 'Level:'
+                size: root.width / 4, root.height / 14
+
+            Label:
+                text: 'Score:'
+                size: root.width / 2, root.height / 14
+
+            Label:
+                text: 'Lives:'
+                size: root.width / 4, root.height / 14
+
+            Label:
+                text: '0'
+                size: root.width / 4, root.height / 14
+
+            Label:
+                text: '0'
+                size: root.width / 2, root.height / 14
+
+            Label:
+                text: '0'
+                size: root.width / 4, root.height / 14
+                

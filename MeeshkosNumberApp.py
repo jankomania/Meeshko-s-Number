@@ -1,5 +1,8 @@
+import kivy
 from kivy.app import App
+from kivy.lang import Builder
 from kivy.uix.widget import Widget
+from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.properties import ObjectProperty
 
 class Game():
@@ -16,7 +19,7 @@ class Game():
 game = Game()
 
 
-class MainMenu(Widget):
+class MainMenu(Screen):
     difficulty = ObjectProperty('Medium')
     start_gold = ObjectProperty(1000)
 
@@ -36,9 +39,20 @@ class MainMenu(Widget):
         game.printr()
 
 
+class GameWin(Screen):
+    pass
+
+
+class WindowManager(ScreenManager):
+    pass
+
+
+kv = Builder.load_file('style.kv')
+
+
 class MeeshkosNumberApp(App):
     def build(self):
-        return MainMenu()
+        return kv
 
 
 if __name__ == '__main__':

@@ -1,4 +1,4 @@
-__version__ = '0.1'
+version = 0.1
 
 import kivy
 from kivy.app import App

@@ -1,0 +1,62 @@
+    def easy(self, instance):
+        game.difficulty = 'Easy'
+        game.start_gold = '500'
+
+    def med(self, instance):
+        game.difficulty = 'Medium'
+        game.start_gold = '1000'
+
+    def hard(self, instance):
+        game.difficulty = 'Hard'
+        game.start_gold = '1500'
+
+    def printr(self, instance):
+        game.printr()
+
+
+    def __init__(self, **kwargs):
+        super(MainMenu, self).__init__(**kwargs)
+
+        self.button_easy = Button(text='Easy', font_size=25)
+        self.button_easy.bind(on_press=self.easy)
+
+        self.button_med = Button(text='Medium', font_size=25)
+        self.button_med.bind(on_press=self.med)
+
+        self.button_hard = Button(text='Hard', font_size=25)
+        self.button_hard.bind(on_press=self.hard)
+
+
+        # Difficulty buttons Grid
+        self.difficulty_buttons = GridLayout()
+        self.difficulty_buttons.cols = 3
+
+        self.difficulty_buttons.add_widget(self.button_easy)
+        self.difficulty_buttons.add_widget(self.button_med)
+        self.difficulty_buttons.add_widget(self.button_hard)
+
+
+        # Difficulty Grid
+        self.difficulty = GridLayout()
+        self.difficulty.cols = 2
+        self.difficulty.add_widget(Label(text='Difficulty:', font_size=25))
+        self.difficulty.add_widget(self.difficulty_buttons)
+
+
+        # Final Grid
+        self.final = GridLayout()
+        self.final.cols = 1
+        
+        # Submit Button
+        self.submit = Button(text='START GAME', font_size=50)
+        self.submit.bind(on_press=self.printr)
+
+        self.final.add_widget(self.difficulty)
+        self.final.add_widget(self.submit)
+
+         # Main Grid
+        self.cols = 1
+        
+        self.add_widget(Label(text="Mishko's Number", font_size=75))
+
+        self.add_widget(self.final)

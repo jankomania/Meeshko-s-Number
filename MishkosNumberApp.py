@@ -1,7 +1,6 @@
 from kivy.app import App
-from kivy.uix.label import Label
-from kivy.uix.gridlayout import GridLayout
-from kivy.uix.button import Button
+from kivy.uix.widget import Widget
+from kivy.properties import ObjectProperty
 
 class Game():
     def __init__(self, difficulty='Medium', start_gold='1000') -> None:
@@ -17,82 +16,30 @@ class Game():
 game = Game()
 
 
-class MainMenu(GridLayout):
-    def easy(self, instance):
+class MainMenu(Widget):
+    difficulty = ObjectProperty('Medium')
+    start_gold = ObjectProperty(1000)
+
+    def easy(self):
         game.difficulty = 'Easy'
         game.start_gold = '500'
 
-    def med(self, instance):
+    def med(self):
         game.difficulty = 'Medium'
         game.start_gold = '1000'
 
-    def hard(self, instance):
+    def hard(self):
         game.difficulty = 'Hard'
         game.start_gold = '1500'
 
-    def printr(self, instance):
+    def printr(self):
         game.printr()
 
 
-    def __init__(self, **kwargs):
-        super(MainMenu, self).__init__(**kwargs)
-
-        self.button_easy = Button(text='Easy', font_size=25)
-        self.button_easy.bind(on_press=self.easy)
-
-        self.button_med = Button(text='Medium', font_size=25)
-        self.button_med.bind(on_press=self.med)
-
-        self.button_hard = Button(text='Hard', font_size=25)
-        self.button_hard.bind(on_press=self.hard)
-
-
-        # Difficulty buttons Grid
-        self.difficulty_buttons = GridLayout()
-        self.difficulty_buttons.cols = 3
-
-        self.difficulty_buttons.add_widget(self.button_easy)
-        self.difficulty_buttons.add_widget(self.button_med)
-        self.difficulty_buttons.add_widget(self.button_hard)
-
-
-        # Difficulty Grid
-        self.difficulty = GridLayout()
-        self.difficulty.cols = 2
-        self.difficulty.add_widget(Label(text='Difficulty:', font_size=25))
-        self.difficulty.add_widget(self.difficulty_buttons)
-
-
-        # Final Grid
-        self.final = GridLayout()
-        self.final.cols = 1
-        
-        # Submit Button
-        self.submit = Button(text='START GAME', font_size=50)
-        self.submit.bind(on_press=self.printr)
-
-        self.final.add_widget(self.difficulty)
-        self.final.add_widget(self.submit)
-
-         # Main Grid
-        self.cols = 1
-        
-        self.add_widget(Label(text="Mishko's Number", font_size=75))
-
-        self.add_widget(self.final)
-
-class Grid(GridLayout):
-    def __init__(self, **kwargs):
-        super(Grid, self).__init__(**kwargs)
-        self.cols = 1
-
-        self.add_widget(Label(text='SUCCESS', font_size=100))
-
-
-class MishkosNumberApp(App):
+class MeeshkosNumberApp(App):
     def build(self):
-        return Grid()
+        return MainMenu()
 
 
 if __name__ == '__main__':
-    MishkosNumberApp().run()
+    MeeshkosNumberApp().run()

@@ -3,6 +3,10 @@ WindowManager:
     GameWin:
 
 
+<Label>:
+    font_size: 50
+
+
 <MainMenu>:
     name: 'Main Menu'
 
@@ -25,7 +29,7 @@ WindowManager:
                 font_size: 30
                 size_hint: None, None
                 size: root.width / 4, root.height / 5
-                
+
 
             GridLayout:
                 cols: 3
@@ -49,14 +53,16 @@ WindowManager:
             on_release:
                 app.root.current = 'Game Window'
                 root.manager.transition.direction = 'up'
-            font_size: 30
+                root.start_game()
+            font_size: 100
             size_hint: None, None
             size: root.width, root.height / 4
 
 
 <GameWin>:
     name: 'Game Window'
-    #size_hint: None, None
+    
+    label_input: label_input
     
     GridLayout:
         cols: 1
@@ -113,6 +119,7 @@ WindowManager:
                 size: root.width / 2, root.height / 7 * 2 / 3
 
             Label:
+                id: label_input
                 text: ''
                 size: root.width / 2, root.height / 7 * 2 / 3
 
@@ -122,52 +129,61 @@ WindowManager:
             Button:
                 text: '1'
                 size: root.width / 3, root.height / 7
+                on_release: root.one()
 
             Button:
                 text: '2'
                 size: root.width / 3, root.height / 7
+                on_release: root.two()
             
             Button:
                 text: '3'
                 size: root.width / 3, root.height / 7
+                on_release: root.three()
             
             Button:
                 text: '4'
                 size: root.width / 3, root.height / 7
+                on_release: root.four()
             
             Button:
                 text: '5'
                 size: root.width / 3, root.height / 7
+                on_release: root.five()
             
             Button:
                 text: '6'
                 size: root.width / 3, root.height / 7
+                on_release: root.six()
             
             Button:
                 text: '7'
                 size: root.width / 3, root.height / 7
+                on_release: root.seven()
             
             Button:
                 text: '8'
                 size: root.width / 3, root.height / 7
+                on_release: root.eight()
             
             Button:
                 text: '9'
                 size: root.width / 3, root.height / 7
+                on_release: root.nine()
             
             Button:
-                text: 'Back'
+                text: 'Delete'
                 size: root.width / 3, root.height / 7
-                on_release:
-                    app.root.current = 'Main Menu'
-                    root.manager.transition.direction = 'down'
+                on_release: root.delete()
             
             Button:
                 text: '0'
                 size: root.width / 3, root.height / 7
+                on_release: root.zero()
             
             Button:
                 text: 'Enter'
                 size: root.width / 3, root.height / 7
+                on_release: root.submit()
             
             

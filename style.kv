@@ -64,6 +64,8 @@ WindowManager:
     
     label_input: label_input
     label_lives: label_lives
+    label_score: label_score
+    label_to: label_to
     
     GridLayout:
         cols: 1
@@ -89,6 +91,7 @@ WindowManager:
                 size: root.width / 4, root.height / 14
 
             Label:
+                id: label_score
                 text: '0'
                 size: root.width / 2, root.height / 14
 
@@ -105,7 +108,7 @@ WindowManager:
                 size: root.width / 2, root.height / 7 * 2 / 3
 
             Label:
-                text: ''
+                text: '0'
                 size: root.width / 2, root.height / 7 * 2 / 3
 
             Label:
@@ -113,7 +116,8 @@ WindowManager:
                 size: root.width / 2, root.height / 7 * 2 / 3
 
             Label:
-                text: ''
+                id: label_to
+                text: '1'
                 size: root.width / 2, root.height / 7 * 2 / 3
             
             Label:

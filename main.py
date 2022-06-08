@@ -1,12 +1,18 @@
 version = 0.1
 
+from enum import auto
 import random
 import kivy
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.widget import Widget
+from kivy.core.window import Window
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.properties import ObjectProperty
+
+
+Window.fullscreen = 'auto'
+
 
 class Game():
     def __init__(self, difficulty='Medium', lives='10', level='0', score=0, label_from='0', label_to='0', curr='0') -> None:

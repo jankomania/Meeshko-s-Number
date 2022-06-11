@@ -15,7 +15,7 @@ from kivy.properties import StringProperty
 
 
 class Game():
-    def __init__(self, difficulty='Medium', lives=10, level=0, score=0, label_from='0', label_to='0', curr=0) -> None:
+    def __init__(self, difficulty='Medium', lives=5, level=0, score=0, label_from='0', label_to='0', curr=0) -> None:
         self.difficulty = difficulty
         self.lives = lives
         self.level = level
@@ -31,11 +31,11 @@ game = Game()
 class MainMenu(Screen):
     def easy(self):
         game.difficulty = 'Easy'
-        game.lives = 20
+        game.lives = 15
 
     def med(self):
         game.difficulty = 'Medium'
-        game.lives = 10
+        game.lives = 5
 
     def hard(self):
         game.difficulty = 'Hard'
@@ -105,31 +105,41 @@ class GameWin(Screen):
 
 
     def score(self):
-        # Gives score appropriate to the current level and difficulty
+        # Gives score and lives appropriate to the current level and difficulty
+        game.score = int(float(game.score))
+
         if game.difficulty == 'Easy':
             if game.level < 5:
+                game.lives += 10
                 self.base_score = self.base_score * 1.25
                 game.score += int(self.base_score)
             elif game.level < 10:
+                game.lives += 15
                 self.base_score = self.base_score * 1.50
                 game.score += int(self.base_score)
             elif game.level < 15:
+                game.lives += 20
                 self.base_score = self.base_score * 1.75
                 game.score += int(self.base_score)
             else:
+                game.lives += 50
                 self.base_score = self.base_score * 3.5
                 game.score *= int(self.base_score)
         elif game.difficulty == 'Medium':
             if game.level < 5:
+                game.lives += 5
                 self.base_score = self.base_score * 1.50
                 game.score += int(self.base_score)
             elif game.level < 10:
+                game.lives += 10
                 self.base_score = self.base_score * 2
                 game.score += int(self.base_score)
             elif game.level < 15:
+                game.lives += 15
                 self.base_score = self.base_score * 2.5
                 game.score += int(self.base_score)
             else:
+                game.lives += 35
                 self.base_score = self.base_score * 10
                 game.score *= int(self.base_score)
         else:
@@ -137,18 +147,21 @@ class GameWin(Screen):
                 self.base_score = self.base_score * 2
                 game.score += int(self.base_score)
             elif game.level < 10:
+                game.lives += 5
                 self.base_score = self.base_score * 3
                 game.score += int(self.base_score)
             elif game.level < 15:
+                game.lives += 10
                 self.base_score = self.base_score * 4
                 game.score += int(self.base_score)
             else:
+                game.lives += 25
                 self.base_score = self.base_score * 20
                 game.score *= int(self.base_score)
 
-        if len(game.score) > 6:
-            game.score = "{:e}".format(game.score)
-
+        # Creates scientific notation if score exceeds 6 figures
+        if game.score > 999999:
+            game.score = "{:.2e}".format(game.score)
 
         game.level += 1
         

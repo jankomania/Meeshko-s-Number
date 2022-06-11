@@ -233,3 +233,4 @@ class MeeshkosNumberApp(App):
 
 if __name__ == '__main__':
     MeeshkosNumberApp().run()
+    input('Press Enter to quit')

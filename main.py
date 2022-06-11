@@ -1,16 +1,13 @@
 version = 0.1
 
-from enum import auto
 import random
 import kivy
 from kivy.app import App
 from kivy.lang import Builder
-from kivy.uix.widget import Widget
 from kivy.core.window import Window
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.properties import ObjectProperty
 from kivy.properties import StringProperty
-from traitlets import Instance
 
 
 #Window.fullscreen = True
@@ -26,14 +23,6 @@ class Game():
         self.label_to = label_to
         self.curr = curr
 
-    def printr(self):
-        print(self.difficulty)
-        print(self.lives)
-        print(self.level)
-        print(self.score)
-        print(self.label_from)
-        print(self.label_to)
-
 
 game = Game()
 
@@ -47,21 +36,14 @@ class MainMenu(Screen):
         game.difficulty = 'Medium'
         game.lives = '10'
 
-
     def hard(self):
         game.difficulty = 'Hard'
         game.lives = '5'
 
-    def printr(self):
-        game.printr()
-
-    def start_game(self):
-        if game.difficulty == 'Easy': game.lives = '20'
-        elif game.difficulty == 'Medium': game.lives = '10'
-        else: game.lives == '5'
-
 
 class GameWin(Screen):
+    base_score = 100
+
     label_input = ObjectProperty(None)
     label_lives = ObjectProperty(None)
     label_score = ObjectProperty(None)
@@ -70,10 +52,6 @@ class GameWin(Screen):
     num_btn = StringProperty()
     
     lives_flag = True
-
-
-    def update_lives(self):
-        self.label_lives.text = game.lives
 
 
     def btn_input(self):
@@ -88,6 +66,82 @@ class GameWin(Screen):
         else:
             self.label_input.text += self.num_btn
 
+    
+    def check_input(self):
+        # Prevents blank and hint input
+        if self.label_input.text in ['', 'HIGHER', 'LOWER']:
+            self.label_input.text = ''
+            return True
+
+
+    def update_lives(self):
+        # Updates the lives label on the first guess
+        self.lives_flag = False
+        self.label_lives.text = game.lives
+
+
+    def hint(self):
+        # Hints on the weight of the current number
+        if self.label_input.text > game.curr:
+            self.label_input.text = 'HIGHER'
+        else:
+            self.label_input.text = 'LOWER'
+
+        # Takes away lives and score
+        if game.score < 0:
+            if game.level < 15:
+                game.score -= 100
+            else: game.score *= 2
+        else:
+            if game.level < 15:
+                game.score -= 100
+            else: game.score /= 2
+
+        if game.lives != '1':
+            game.lives -= 1
+        else: game.lives = 'DEAD'
+
+
+    def score(self):
+        # Gives score appropriate to the current level and difficulty
+        if game.difficulty == 'Easy':
+            if game.level < '5':
+                game.score += 100
+            elif game.level < '10':
+                game.score += 500
+            elif game.level < '15':
+                game.score += 1000
+            else: game.score *= 2
+        elif game.difficulty == 'Medium':
+            if game.level < '5':
+                game.score += 200
+            elif game.level < '10':
+                game.score += 1000
+            elif game.level < '15':
+                game.score += 2000
+            else: game.score *= 4
+        else:
+            if game.level < '5':
+                game.score += 500
+            elif game.level < '10':
+                game.score += 2500
+            elif game.level < '15':
+                game.score += 5000
+            else: game.score *= 10
+        
+
+
+    def generate(self):
+        # Meeshko kidnaps a new number
+        self.label_to.text = str(int(self.label_to.text) * 2)
+        game.curr = random.randint(0, int(self.label_to.text))
+
+
+    def update(self):
+        # Updates score and lives labels
+        self.label_score.text = game.score
+        self.label_lives.text = game.lives
+
         
     def delete(self):
         if self.label_input.text != '':
@@ -95,59 +149,21 @@ class GameWin(Screen):
         
 
     def submit(self):
-        # Prevents blank and hint input
-        if self.label_input.text in ['', 'HIGHER', 'LOWER']:
-            self.label_input.text = ''
-            return 1
-        
-        # Updates the lives label on the first guess
-        if self.lives_flag:
-            self.lives_flag = False
-            self.label_lives.text = game.lives
-        
-        # Game scoring logic
-        if self.label_input.text == str(game.curr):
-            game.lives = str(int(int(game.lives) * 1.25))
-            self.label_lives.text = game.lives
-            
-            self.label_input.text = ''
-            
-            if game.score == 0:
-                    game.score = 100
-            elif game.score < 0:
-                if game.difficulty == 'Easy':
-                    game.score = int(game.score / 1.25)
-                elif game.difficulty == 'Medium':
-                    game.score = int(game.score / 2)
-                else: game.score = int(game.score / 2.5)
-            else:
-                if game.difficulty == 'Easy':
-                    game.score = int(game.score * 1.75)
-                elif game.difficulty == 'Medium':
-                    game.score = int(game.score * 2)
-                else: game.score = int(game.score * 2.5)
-
-            self.label_to.text = str(int(self.label_to.text) * 2)
-            game.curr = random.randint(0, int(self.label_to.text))
+        if self.check_input():
+            pass
         else:
-            if game.score < 10000:
-                game.score -= 100
-            elif game.score < 100000:
-                game.score -= 1000
-            else: game.score -= 10000
-
-            if game.lives == '1':
-                self.label_lives.text = 'DEAD'
-                return 1
+            # Checks if the guess is correct and calls score() function
+            if self.label_input.text == game.curr:
+                self.score()
+                self.generate()
             else:
-                game.lives = str(int(game.lives) - 1)
-                self.label_lives.text = str(game.lives)
+                self.hint()
 
-            if int(self.label_input.text) < int(game.curr):
-                self.label_input.text = 'HIGHER'
-            else: self.label_input.text = 'LOWER'
+        self.update()
 
-        self.label_score.text = str(game.score)
+        if self.lives_flag:
+            self.update_lives()
+
         print(game.curr)
 
 

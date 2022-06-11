@@ -11,7 +11,7 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.properties import ObjectProperty
 
 
-Window.fullscreen = 'auto'
+#Window.fullscreen = 'auto'
 
 
 class Game():

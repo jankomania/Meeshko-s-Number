@@ -9,6 +9,8 @@ from kivy.uix.widget import Widget
 from kivy.core.window import Window
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.properties import ObjectProperty
+from kivy.properties import StringProperty
+from traitlets import Instance
 
 
 #Window.fullscreen = True
@@ -64,112 +66,28 @@ class GameWin(Screen):
     label_lives = ObjectProperty(None)
     label_score = ObjectProperty(None)
     label_to = ObjectProperty(None)
+
+    num_btn = StringProperty()
     
     lives_flag = True
+
 
     def update_lives(self):
         self.label_lives.text = game.lives
 
 
-    def one(self):
+    def btn_input(self):
+        # Clears the input label if it contains either the high or low guess hint
         if self.label_input.text in ['HIGHER', 'LOWER']:
             self.label_input.text = ''
 
+        # Limits the input label to 7 digits and concatenates the last pressed button
         if len(self.label_input.text) > 7: pass
         elif self.label_input.text == '':
-            self.label_input.text = '1'
-        else: self.label_input.text += '1'
-        
-        
-    def two(self):
-        if self.label_input.text in ['HIGHER', 'LOWER']:
-            self.label_input.text = ''
-        
-        if len(self.label_input.text) > 7: pass
-        elif self.label_input.text == '':
-            self.label_input.text = '2'
-        else: self.label_input.text += '2'
-        
-        
-    def three(self):
-        if self.label_input.text in ['HIGHER', 'LOWER']:
-            self.label_input.text = ''
-        
-        if len(self.label_input.text) > 7: pass
-        elif self.label_input.text == '':
-            self.label_input.text = '3'
-        else: self.label_input.text += '3'
-        
-        
-    def four(self):
-        if self.label_input.text in ['HIGHER', 'LOWER']:
-            self.label_input.text = ''
+            self.label_input.text = self.num_btn
+        else:
+            self.label_input.text += self.num_btn
 
-        if len(self.label_input.text) > 7: pass
-        elif self.label_input.text == '':
-            self.label_input.text = '4'
-        else: self.label_input.text += '4'
-        
-        
-    def five(self):
-        if self.label_input.text in ['HIGHER', 'LOWER']:
-            self.label_input.text = ''
-
-        if len(self.label_input.text) > 7: pass
-        elif self.label_input.text == '':
-            self.label_input.text = '5'
-        else: self.label_input.text += '5'
-        
-        
-    def six(self):
-        if self.label_input.text in ['HIGHER', 'LOWER']:
-            self.label_input.text = ''
-
-        if len(self.label_input.text) > 7: pass
-        elif self.label_input.text == '':
-            self.label_input.text = '6'
-        else: self.label_input.text += '6'
-        
-        
-    def seven(self):
-        if self.label_input.text in ['HIGHER', 'LOWER']:
-            self.label_input.text = ''
-
-        if len(self.label_input.text) > 7: pass
-        elif self.label_input.text == '':
-            self.label_input.text = '7'
-        else: self.label_input.text += '7'
-        
-        
-    def eight(self):
-        if self.label_input.text in ['HIGHER', 'LOWER']:
-            self.label_input.text = ''
-
-        if len(self.label_input.text) > 7: pass
-        elif self.label_input.text == '':
-            self.label_input.text = '8'
-        else: self.label_input.text += '8'
-        
-    
-    def nine(self):
-        if self.label_input.text in ['HIGHER', 'LOWER']:
-            self.label_input.text = ''
-
-        if len(self.label_input.text) > 7: pass
-        elif self.label_input.text == '':
-            self.label_input.text = '9'
-        else: self.label_input.text += '9'
-        
-        
-    def zero(self):
-        if self.label_input.text in ['HIGHER', 'LOWER']:
-            self.label_input.text = ''
-
-        if len(self.label_input.text) > 7: pass
-        elif self.label_input.text == '':
-            self.label_input.text = '0'
-        else: self.label_input.text += '0'
-        
         
     def delete(self):
         if self.label_input.text != '':
@@ -177,15 +95,17 @@ class GameWin(Screen):
         
 
     def submit(self):
-        #game.printr()
+        # Prevents blank and hint input
         if self.label_input.text in ['', 'HIGHER', 'LOWER']:
             self.label_input.text = ''
             return 1
         
+        # Updates the lives label on the first guess
         if self.lives_flag:
             self.lives_flag = False
             self.label_lives.text = game.lives
         
+        # Game scoring logic
         if self.label_input.text == str(game.curr):
             game.lives = str(int(int(game.lives) * 1.25))
             self.label_lives.text = game.lives
@@ -223,7 +143,7 @@ class GameWin(Screen):
                 game.lives = str(int(game.lives) - 1)
                 self.label_lives.text = str(game.lives)
 
-            if int(self.label_input.text) < game.curr:
+            if int(self.label_input.text) < int(game.curr):
                 self.label_input.text = 'HIGHER'
             else: self.label_input.text = 'LOWER'
 

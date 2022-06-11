@@ -135,47 +135,65 @@ WindowManager:
             Button:
                 text: '1'
                 size: root.width / 3, root.height / 7
-                on_release: root.one()
+                on_release:
+                    root.num_btn = self.text
+                    root.btn_input()
 
             Button:
                 text: '2'
                 size: root.width / 3, root.height / 7
-                on_release: root.two()
+                on_release:
+                    root.num_btn = self.text
+                    root.btn_input()
             
             Button:
                 text: '3'
                 size: root.width / 3, root.height / 7
-                on_release: root.three()
+                on_release:
+                    root.num_btn = self.text
+                    root.btn_input()
             
             Button:
                 text: '4'
                 size: root.width / 3, root.height / 7
-                on_release: root.four()
+                on_release:
+                    root.num_btn = self.text
+                    root.btn_input()
             
             Button:
                 text: '5'
                 size: root.width / 3, root.height / 7
-                on_release: root.five()
+                on_release:
+                    root.num_btn = self.text
+                    root.btn_input()
             
             Button:
                 text: '6'
                 size: root.width / 3, root.height / 7
-                on_release: root.six()
+                on_release:
+                    root.num_btn = self.text
+                    root.btn_input()
             
             Button:
                 text: '7'
                 size: root.width / 3, root.height / 7
-                on_release: root.seven()
+                on_release:
+                    root.num_btn = self.text
+                    root.btn_input()
             
             Button:
                 text: '8'
                 size: root.width / 3, root.height / 7
-                on_release: root.eight()
+                on_release:
+                    root.num_btn = self.text
+                    root.btn_input()
             
             Button:
                 text: '9'
                 size: root.width / 3, root.height / 7
-                on_release: root.nine()
+                on_release:
+                    root.num_btn = self.text
+                    root.btn_input()
             
             Button:
                 text: 'Delete'
@@ -185,7 +203,9 @@ WindowManager:
             Button:
                 text: '0'
                 size: root.width / 3, root.height / 7
-                on_release: root.zero()
+                on_release:
+                    root.num_btn = self.text
+                    root.btn_input()
             
             Button:
                 text: 'Enter'

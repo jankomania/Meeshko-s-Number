@@ -1,6 +1,7 @@
 version = 0.1
 
 import random
+
 import kivy
 from kivy.app import App
 from kivy.lang import Builder
@@ -14,7 +15,7 @@ from kivy.properties import StringProperty
 
 
 class Game():
-    def __init__(self, difficulty='Medium', lives='10', level='0', score=0, label_from='0', label_to='0', curr='0') -> None:
+    def __init__(self, difficulty='Medium', lives=10, level=0, score=0, label_from='0', label_to='0', curr=0) -> None:
         self.difficulty = difficulty
         self.lives = lives
         self.level = level
@@ -30,15 +31,15 @@ game = Game()
 class MainMenu(Screen):
     def easy(self):
         game.difficulty = 'Easy'
-        game.lives = '20'
+        game.lives = 20
 
     def med(self):
         game.difficulty = 'Medium'
-        game.lives = '10'
+        game.lives = 10
 
     def hard(self):
         game.difficulty = 'Hard'
-        game.lives = '5'
+        game.lives = 5
 
 
 class GameWin(Screen):
@@ -46,6 +47,7 @@ class GameWin(Screen):
 
     label_input = ObjectProperty(None)
     label_lives = ObjectProperty(None)
+    label_level = ObjectProperty(None)
     label_score = ObjectProperty(None)
     label_to = ObjectProperty(None)
 
@@ -77,12 +79,12 @@ class GameWin(Screen):
     def update_lives(self):
         # Updates the lives label on the first guess
         self.lives_flag = False
-        self.label_lives.text = game.lives
+        self.label_lives.text = str(game.lives)
 
 
     def hint(self):
         # Hints on the weight of the current number
-        if self.label_input.text > game.curr:
+        if int(self.label_input.text) < game.curr:
             self.label_input.text = 'HIGHER'
         else:
             self.label_input.text = 'LOWER'
@@ -97,50 +99,79 @@ class GameWin(Screen):
                 game.score -= 100
             else: game.score /= 2
 
-        if game.lives != '1':
+        if game.lives != 1:
             game.lives -= 1
-        else: game.lives = 'DEAD'
+        else: game.lives = -2345678
 
 
     def score(self):
         # Gives score appropriate to the current level and difficulty
         if game.difficulty == 'Easy':
-            if game.level < '5':
-                game.score += 100
-            elif game.level < '10':
-                game.score += 500
-            elif game.level < '15':
-                game.score += 1000
-            else: game.score *= 2
+            if game.level < 5:
+                self.base_score = self.base_score * 1.25
+                game.score += int(self.base_score)
+            elif game.level < 10:
+                self.base_score = self.base_score * 1.50
+                game.score += int(self.base_score)
+            elif game.level < 15:
+                self.base_score = self.base_score * 1.75
+                game.score += int(self.base_score)
+            else:
+                self.base_score = self.base_score * 3.5
+                game.score *= int(self.base_score)
         elif game.difficulty == 'Medium':
-            if game.level < '5':
-                game.score += 200
-            elif game.level < '10':
-                game.score += 1000
-            elif game.level < '15':
-                game.score += 2000
-            else: game.score *= 4
+            if game.level < 5:
+                self.base_score = self.base_score * 1.50
+                game.score += int(self.base_score)
+            elif game.level < 10:
+                self.base_score = self.base_score * 2
+                game.score += int(self.base_score)
+            elif game.level < 15:
+                self.base_score = self.base_score * 2.5
+                game.score += int(self.base_score)
+            else:
+                self.base_score = self.base_score * 10
+                game.score *= int(self.base_score)
         else:
-            if game.level < '5':
-                game.score += 500
-            elif game.level < '10':
-                game.score += 2500
-            elif game.level < '15':
-                game.score += 5000
-            else: game.score *= 10
+            if game.level < 5:
+                self.base_score = self.base_score * 2
+                game.score += int(self.base_score)
+            elif game.level < 10:
+                self.base_score = self.base_score * 3
+                game.score += int(self.base_score)
+            elif game.level < 15:
+                self.base_score = self.base_score * 4
+                game.score += int(self.base_score)
+            else:
+                self.base_score = self.base_score * 20
+                game.score *= int(self.base_score)
+
+        if len(game.score) > 6:
+            game.score = "{:e}".format(game.score)
+
+
+        game.level += 1
         
 
 
     def generate(self):
         # Meeshko kidnaps a new number
         self.label_to.text = str(int(self.label_to.text) * 2)
-        game.curr = random.randint(0, int(self.label_to.text))
+        temp = random.randint(0, int(self.label_to.text))
+        if game.curr == temp: self.generate()
+        else: game.curr = temp
 
 
     def update(self):
         # Updates score and lives labels
-        self.label_score.text = game.score
-        self.label_lives.text = game.lives
+        self.label_score.text = str(game.score)
+        self.label_lives.text = str(game.lives)
+        self.label_level.text = str(game.level)
+
+        # Prevents update if hint is present
+        if self.label_input.text in ['HIGHER', 'LOWER']:
+            pass
+        else: self.label_input.text = ''
 
         
     def delete(self):
@@ -149,11 +180,13 @@ class GameWin(Screen):
         
 
     def submit(self):
+        print(game.curr)
+
         if self.check_input():
             pass
         else:
             # Checks if the guess is correct and calls score() function
-            if self.label_input.text == game.curr:
+            if int(self.label_input.text) == game.curr:
                 self.score()
                 self.generate()
             else:

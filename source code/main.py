@@ -11,8 +11,7 @@ from kivy.properties import ObjectProperty
 from kivy.properties import StringProperty
 
 
-#Window.fullscreen = True
-
+Window.fullscreen = 'auto'
 
 class Game():
     def __init__(self, difficulty='Medium', lives=5, level=0, score=0, label_from='0', label_to='0', curr=0) -> None:
@@ -54,6 +53,20 @@ class GameWin(Screen):
     num_btn = StringProperty()
     
     lives_flag = True
+
+    def __init__(self, **kw):
+        super(GameWin).__init__(**kw):
+        self._keyboard = Window.request_keyboard(self._keyboard_closed, self)
+        self._keyboard.bind(on_key_down=self._on_keyboard_down)
+
+
+    def _keyboard_closed(self):
+        self._keyboard.unbind(on_key_down=self._on_keyboard_down)
+        self._keyboard = None
+
+
+    def _on_keyboard_down(self, keyboard, keycode, text, modifiers):
+        pass
 
 
     def btn_input(self):

@@ -54,8 +54,8 @@ class GameWin(Screen):
     
     lives_flag = True
 
-    def __init__(self, **kw):
-        super(GameWin).__init__(**kw):
+    def __init__(self, **kwargs):
+        super(GameWin, self).__init__(**kwargs)
         self._keyboard = Window.request_keyboard(self._keyboard_closed, self)
         self._keyboard.bind(on_key_down=self._on_keyboard_down)
 
@@ -66,7 +66,29 @@ class GameWin(Screen):
 
 
     def _on_keyboard_down(self, keyboard, keycode, text, modifiers):
-        pass
+        if keycode[1] == '1' or keycode[1] == 'numpad1':
+            self.key_input('1')
+        elif keycode[1] == '2' or keycode[1] == 'numpad2':
+            self.key_input('2')
+        elif keycode[1] == '3' or keycode[1] == 'numpad3':
+            self.key_input('3')
+        elif keycode[1] == '4' or keycode[1] == 'numpad4':
+            self.key_input('4')
+        elif keycode[1] == '5' or keycode[1] == 'numpad5':
+            self.key_input('5')
+        elif keycode[1] == '6' or keycode[1] == 'numpad6':
+            self.key_input('6')
+        elif keycode[1] == '7' or keycode[1] == 'numpad7':
+            self.key_input('7')
+        elif keycode[1] == '8' or keycode[1] == 'numpad8':
+            self.key_input('8')
+        elif keycode[1] == '9' or keycode[1] == 'numpad9':
+            self.key_input('9')
+        elif keycode[1] == '0' or keycode[1] == 'numpad0':
+            self.key_input('0')
+        elif keycode[1] == 'delete' or keycode[1] == 'backspace':
+            self.delete()
+        
 
 
     def btn_input(self):
@@ -80,6 +102,19 @@ class GameWin(Screen):
             self.label_input.text = self.num_btn
         else:
             self.label_input.text += self.num_btn
+
+
+    def key_input(self, key):
+        # Clears the input label if it contains either the high or low guess hint
+        if self.label_input.text in ['HIGHER', 'LOWER']:
+            self.label_input.text = ''
+
+        # Limits the input label to 7 digits and concatenates the last pressed button
+        if len(self.label_input.text) > 7: pass
+        elif self.label_input.text == '':
+            self.label_input.text = key
+        else:
+            self.label_input.text += key        
 
     
     def check_input(self):

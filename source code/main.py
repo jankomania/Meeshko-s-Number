@@ -66,6 +66,8 @@ class GameWin(Screen):
 
 
     def _on_keyboard_down(self, keyboard, keycode, text, modifiers):
+        print('Pressed key: ' + keycode[1])
+
         if keycode[1] == '1' or keycode[1] == 'numpad1':
             self.key_input('1')
         elif keycode[1] == '2' or keycode[1] == 'numpad2':
@@ -88,20 +90,8 @@ class GameWin(Screen):
             self.key_input('0')
         elif keycode[1] == 'delete' or keycode[1] == 'backspace':
             self.delete()
-        
-
-
-    def btn_input(self):
-        # Clears the input label if it contains either the high or low guess hint
-        if self.label_input.text in ['HIGHER', 'LOWER']:
-            self.label_input.text = ''
-
-        # Limits the input label to 7 digits and concatenates the last pressed button
-        if len(self.label_input.text) > 7: pass
-        elif self.label_input.text == '':
-            self.label_input.text = self.num_btn
-        else:
-            self.label_input.text += self.num_btn
+        elif keycode[1] == 'enter' or keycode[1] == 'numpadenter':
+            self.submit()
 
 
     def key_input(self, key):
